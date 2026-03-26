@@ -57,7 +57,7 @@ router.post('/chat', authenticateToken, async (req, res) => {
 
             let message = 'Error communicating with AI service';
             if (status === 403) {
-                message = 'GOOGLE_AI_FORBIDDEN: Gemini API rejected the key or project. Please check Google AI Studio restrictions.';
+                message = 'AI Service Access Denied. Please ensure your subscription is active and the AI service is properly configured.';
             } else if (googleError?.message) {
                 message = googleError.message;
             } else if (axiosError.message) {
