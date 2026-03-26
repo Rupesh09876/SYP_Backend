@@ -48,8 +48,6 @@ if (isDev) {
       credentials: true,
     })
   );
-
-  app.options('*', cors());
 } else {
   const allowedOrigins = FRONTEND_URL.split(',').map((s) => s.trim()).filter(Boolean);
   app.use(
@@ -66,6 +64,9 @@ if (isDev) {
     })
   );
 }
+
+// Enable preflight for all routes
+app.options('*', cors());
 
 // Rate limit
 app.use(
