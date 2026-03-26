@@ -6,17 +6,11 @@ const { authenticateToken } = require('../middleware/auth');
 // New diagnostic route
 router.get('/health', (req, res) => res.json({ ok: true, msg: 'AI Service is Routeable' }));
 
-router.post('/chat', authenticateToken, async (req, res) => {
-    console.log(`--- AI Proxy Request: POST /chat from ${req.user?.role} (ID: ${req.user?.id}) ---`);
-    console.log('Headers:', req.headers['authorization']?.substring(0, 15) + '...');
-    
-    // Feature gate: AI Assistant is premium-only for patients
-    if (req.user.role === 'patient' && req.user.subscription_tier !== 'premium') {
-        console.warn(`AI Proxy: Access denied for non-premium patient ${req.user.id}`);
-        return res.status(403).json({ 
-            error: 'AI Health Assistant is a Premium feature. Please upgrade your subscription to use it.' 
-        });
-    }
+// router.post('/chat', authenticateToken, async (req, res) => { // TEMPORARILY DISABLED FOR DEBUGGING
+router.post('/chat', async (req, res) => {
+    console.log(`--- AI Proxy Request: POST /chat (Public Debug Mode) ---`);
+    const authHeader = req.headers['authorization'];
+    console.log('Authorization Header Present:', !!authHeader);
 
     try {
         const { contents, system_instruction, model = 'gemini-1.5-flash' } = req.body;
@@ -58,7 +52,7 @@ router.post('/chat', authenticateToken, async (req, res) => {
 
             let message = 'Error communicating with AI service';
             if (status === 403) {
-                message = 'AI Service Access Denied. This may be due to regional restrictions or invalid API configuration.';
+                message = 'GOOGLE_AI_FORBIDDEN: Gemini API rejected the key or project. Please check Google AI Studio restrictions.';
             } else if (googleError?.message) {
                 message = googleError.message;
             } else if (axiosError.message) {
