@@ -80,10 +80,10 @@ app.use(
 // Routes
 app.get('/api/health', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
+app.use('/api/ai', require('./routes/ai'));
 app.use('/api', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/appointments', appointmentRoutes);
-app.use('/api/ai', require('./routes/ai'));
 
 // NEW ROUTES
 const doctorRoutes = require('./routes/doctor');

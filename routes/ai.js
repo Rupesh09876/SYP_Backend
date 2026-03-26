@@ -3,8 +3,12 @@ const router = express.Router();
 const axios = require('axios');
 const { authenticateToken } = require('../middleware/auth');
 
+// New diagnostic route
+router.get('/health', (req, res) => res.json({ ok: true, msg: 'AI Service is Routeable' }));
+
 router.post('/chat', authenticateToken, async (req, res) => {
-    console.log(`--- AI Proxy Request Received from ${req.user.role} (ID: ${req.user.id}) ---`);
+    console.log(`--- AI Proxy Request: POST /chat from ${req.user?.role} (ID: ${req.user?.id}) ---`);
+    console.log('Headers:', req.headers['authorization']?.substring(0, 15) + '...');
     
     // Feature gate: AI Assistant is premium-only for patients
     if (req.user.role === 'patient' && req.user.subscription_tier !== 'premium') {
