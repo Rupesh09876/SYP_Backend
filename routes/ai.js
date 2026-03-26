@@ -1,12 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const axios = require('axios');
+const { authenticateToken } = require('../middleware/auth');
 
+router.post('/chat', authenticateToken, async (req, res) => {
+    console.log(`--- AI Proxy Request Received from ${req.user.role} (ID: ${req.user.id}) ---`);
+    
+    // Feature gate: AI Assistant is premium-only for patients
+    if (req.user.role === 'patient' && req.user.subscription_tier !== 'premium') {
+        console.warn(`AI Proxy: Access denied for non-premium patient ${req.user.id}`);
+        return res.status(403).json({ 
+            error: 'AI Health Assistant is a Premium feature. Please upgrade your subscription to use it.' 
+        });
+    }
 
-router.post('/chat', async (req, res) => {
-    console.log('--- AI Proxy Request Received ---');
     try {
-        const { contents, system_instruction, model = 'gemini-flash-latest' } = req.body;
+        const { contents, system_instruction, model = 'gemini-1.5-flash' } = req.body;
         const apiKey = process.env.GEMINI_API_KEY;
         
         console.log('Model:', model);
@@ -16,8 +22,8 @@ router.post('/chat', async (req, res) => {
         }
 
         if (!apiKey) {
-            console.error('AI Proxy: Missing API Key');
-            return res.status(500).json({ error: 'GEMINI_API_KEY is not configured on the server.' });
+            console.error('AI Proxy: Missing GEMINI_API_KEY in environment');
+            return res.status(500).json({ error: 'AI Service is temporarily unavailable (Missing credentials).' });
         }
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
@@ -36,14 +42,27 @@ router.post('/chat', async (req, res) => {
             console.log('AI Proxy: Gemini API Success');
             return res.json(response.data);
         } catch (axiosError) {
-            console.error('AI Proxy: Gemini API Call Failed:', axiosError.response?.data || axiosError.message);
             const status = axiosError.response?.status || 500;
-            const message = axiosError.response?.data?.error?.message || axiosError.message || 'Error communicating with AI service';
+            const googleError = axiosError.response?.data?.error;
+            
+            console.error('AI Proxy: Gemini API Call Failed!');
+            console.error('Status Code:', status);
+            console.error('Google Error Payload:', JSON.stringify(googleError, null, 2));
+
+            let message = 'Error communicating with AI service';
+            if (status === 403) {
+                message = 'AI Service Access Denied. This may be due to regional restrictions or invalid API configuration.';
+            } else if (googleError?.message) {
+                message = googleError.message;
+            } else if (axiosError.message) {
+                message = axiosError.message;
+            }
+
             return res.status(status).json({ error: message });
         }
     } catch (criticalError) {
         console.error('AI Proxy Critical Error:', criticalError.message);
-        return res.status(500).json({ error: 'Internal AI Proxy Error' });
+        return res.status(500).json({ error: 'Internal AI Proxy error' });
     }
 });
 
