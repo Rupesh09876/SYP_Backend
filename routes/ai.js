@@ -15,8 +15,8 @@ router.get('/env-check', (req, res) => {
 });
 
 // TEMPORARY: Public test route to verify Gemini Key on Render
-router.post('/test-public', async (req, res) => {
-    console.log('--- AI PUBLIC TEST REQUEST RECEIVED ---');
+router.get('/test-public', async (req, res) => {
+    console.log('--- AI PUBLIC TEST REQUEST RECEIVED (GET) ---');
     try {
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) return res.status(500).json({ error: 'No API Key on server' });
