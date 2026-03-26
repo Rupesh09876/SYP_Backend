@@ -49,7 +49,7 @@ if (isDev) {
     })
   );
 
-  app.options('*', cors());
+  app.options(['https://syp-backend.onrender.com'], cors());
 } else {
   const allowedOrigins = FRONTEND_URL.split(',').map((s) => s.trim()).filter(Boolean);
   app.use(
