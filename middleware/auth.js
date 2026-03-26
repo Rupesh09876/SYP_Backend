@@ -55,9 +55,15 @@ const authenticateToken = async (req, res, next) => {
         req.user = authUser;
         next();
     } catch (error) {
+        console.error('JWT Verification Error:', error.message);
+        if (error.name === 'TokenExpiredError') {
+            console.error('Token expired at:', error.expiredAt);
+        } else if (error.name === 'JsonWebTokenError') {
+            console.error('Invalid token payload or signature. Check JWT_SECRET.');
+        }
         return res.status(403).json({
             success: false,
-            message: 'Invalid or expired token'
+            message: `Auth Failure: ${error.message}`
         });
     }
 };
