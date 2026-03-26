@@ -6,9 +6,17 @@ const { authenticateToken } = require('../middleware/auth');
 // New diagnostic route
 router.get('/health', (req, res) => res.json({ ok: true, msg: 'AI Service is Routeable' }));
 
-router.post('/chat', async (req, res) => {
-    console.log(`--- AI Proxy Request: POST /chat (FULLY PUBLIC MODE) ---`);
+router.post('/chat', authenticateToken, async (req, res) => {
+    console.log(`--- AI Proxy Request: POST /chat from ${req.user.role} (ID: ${req.user.id}) ---`);
     
+    // Feature gate: AI Assistant is premium-only for patients
+    if (req.user.role === 'patient' && req.user.subscription_tier !== 'premium') {
+        console.warn(`AI Proxy: Access denied for non-premium patient ${req.user.id}`);
+        return res.status(403).json({ 
+            error: 'AI Health Assistant is a Premium feature. Please upgrade your subscription to use it.' 
+        });
+    }
+
     try {
         const { contents, system_instruction, model = 'gemini-1.5-flash' } = req.body;
         const apiKey = process.env.GEMINI_API_KEY;
