@@ -49,7 +49,7 @@ if (isDev) {
     })
   );
 
-  app.options('https://syp-frontend-lovat.vercel.app/login', cors());
+  app.options('*', cors());
 } else {
   const allowedOrigins = FRONTEND_URL.split(',').map((s) => s.trim()).filter(Boolean);
   app.use(
