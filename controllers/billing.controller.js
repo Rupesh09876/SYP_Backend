@@ -51,9 +51,10 @@ const initiateKhaltiPayment = async (req, res) => {
         const purchase_order_id = `BILL-${bill.id}-${Date.now()}`;
         const purchase_order_name = `Consultation Bill #${bill.id}`;
 
+        const baseFrontend = req.headers.origin || FRONTEND_URL;
         const payload = {
-            return_url: `${FRONTEND_URL}/patient/billing`,
-            website_url: FRONTEND_URL,
+            return_url: `${baseFrontend}/patient/billing`,
+            website_url: baseFrontend,
             amount: amountInPaisa,
             purchase_order_id: purchase_order_id,
             purchase_order_name: purchase_order_name,

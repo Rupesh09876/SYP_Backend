@@ -22,9 +22,10 @@ const initiateSubscriptionPayment = async (req, res) => {
         }
 
         // LIVE/TEST MODE: Call Khalti API
+        const baseFrontend = req.headers.origin || FRONTEND_URL;
         const payload = {
-            return_url: `${FRONTEND_URL}/patient/subscription`,
-            website_url: FRONTEND_URL,
+            return_url: `${baseFrontend}/patient/subscription`,
+            website_url: baseFrontend,
             amount: 10000, // Rs. 100 in paisa
             purchase_order_id: `SUB-${req.user.id}-${Date.now()}`,
             purchase_order_name: `Premium Subscription - ${req.user.email}`,
