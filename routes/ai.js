@@ -6,15 +6,27 @@ const { authenticateToken } = require('../middleware/auth');
 // New diagnostic route
 router.get('/health', (req, res) => res.json({ ok: true, msg: 'AI Service is Routeable' }));
 
+// TEMPORARY: Public test route to verify Gemini Key on Render
+router.post('/test-public', async (req, res) => {
+    console.log('--- AI PUBLIC TEST REQUEST RECEIVED ---');
+    try {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) return res.status(500).json({ error: 'No API Key on server' });
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const response = await axios.post(url, { contents: [{ role: 'user', parts: [{ text: 'Hello' }] }] });
+        return res.json({ success: true, msg: 'Public Test Success', data: response.data });
+    } catch (e) {
+        return res.status(e.response?.status || 500).json({ error: e.message, data: e.response?.data });
+    }
+});
+
 router.post('/chat', authenticateToken, async (req, res) => {
-    console.log(`--- AI Proxy Request: POST /chat from ${req.user.role} (ID: ${req.user.id}) ---`);
+    console.log(`--- AI Proxy Request: /chat ---`);
+    console.log(`User: ${req.user.id}, Role: ${req.user.role}, Tier: ${req.user.subscription_tier}`);
     
-    // Feature gate: AI Assistant is premium-only for patients
+    // Feature gate
     if (req.user.role === 'patient' && req.user.subscription_tier !== 'premium') {
-        console.warn(`AI Proxy: Access denied for non-premium patient ${req.user.id}`);
-        return res.status(403).json({ 
-            error: 'AI Health Assistant is a Premium feature. Please upgrade your subscription to use it.' 
-        });
+        return res.status(403).json({ error: 'DEBUG_PREMIUM_REQUIRED' });
     }
 
     try {
