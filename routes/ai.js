@@ -3,8 +3,16 @@ const router = express.Router();
 const axios = require('axios');
 const { authenticateToken } = require('../middleware/auth');
 
-// New diagnostic route
+// New diagnostic routes
 router.get('/health', (req, res) => res.json({ ok: true, msg: 'AI Service is Routeable' }));
+router.get('/env-check', (req, res) => {
+    res.json({
+        has_gemini_key: !!process.env.GEMINI_API_KEY,
+        has_jwt_secret: !!process.env.JWT_SECRET,
+        node_env: process.env.NODE_ENV,
+        port: process.env.PORT
+    });
+});
 
 // TEMPORARY: Public test route to verify Gemini Key on Render
 router.post('/test-public', async (req, res) => {
