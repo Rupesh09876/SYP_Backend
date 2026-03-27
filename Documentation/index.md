@@ -5,8 +5,10 @@ Welcome to the official documentation for the HAMS platform. This repository con
 
 ### 📂 Directory Structure
 - [Architecture & Flows](./Architecture_Flow.md): Detailed system maps and feature logic.
+- [Wireframes & Blueprints](./Wireframes.md): Comprehensive low-fidelity UI plans.
 - [Deployment & Links](./Deployment.md): Production URLs and verification status.
 - [**Artifacts Hub**](./Artifacts/): Evidence of progress organized by sprint.
+- [**Technical Appendix**](./Appendix.md): Stack details, API reference, and FAQ.
 
 ---
 
