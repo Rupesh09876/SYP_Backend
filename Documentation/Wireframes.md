@@ -1,93 +1,130 @@
 # HAMS - Project Wireframes & UI Blueprints
-## Structural Design for All System Pages (A-Z)
+## Structural Design for All System Pages
 
-This document provides low-fidelity wireframes and structural blueprints for the HAMS platform, serving as a comprehensive roadmap for all 25 system views.
+This document provides low-fidelity wireframes and structural blueprints for the HAMS platform, serving as a roadmap for the front-end implementation.
 
 ---
 
-### 🏥 1. Patient Portal (11 Pages)
+### 🔐 1. Authentication & Onboarding
+**Pages**: Login, Registration, Forgot Password.
 
-#### **1.1 Patient Dashboard**
+#### **Layout Structure**
+```mermaid
+graph TD
+    A[Logo Section] --> B[Input: Username]
+    B --> C[Input: Password]
+    C --> D[Select: Role - Patient/Doctor/Admin]
+    D --> E[Button: Login]
+    E --> F[Link: Register/Forgot Password]
+```
+
+---
+
+### 🏥 2. Patient Portal
+**Pages**: Dashboard, Appointments, AI Assistant, Reports.
+
+#### **Blueprint: Patient Dashboard**
 ![Patient Dashboard Wireframe](./Artifacts/Sprint1_Core/Patient_Dashboard_Wireframe.png)
 
-#### **1.2 Appointments & Booking**
-```mermaid
-graph TD
-    A[Appointments List] --> B[Filter by Status]
-    A --> C[Button: Book New Appointment]
-    C --> D[Select Dept] --> E[Select Doctor]
-    E --> F[Select Slot] --> G[Confirm Modal]
-```
+#### **Layout: Appointment Booking**
+| Header | Sidebar | Main Content |
+| :--- | :--- | :--- |
+| **HAMS Patient** | Dashboard | **Book Appointment** |
+| Profile | Appointments | [Select Department V] |
+| Logout | Reports | [Select Doctor V] |
+| | AI Assistant | [Calendar View] -> [Available Slots] |
+| | | [Button: Confirm Booking] |
 
-#### **1.3 Medical Reports & Sharing**
-| List View | Detail View (Public/Private) |
-| :--- | :--- |
-| **All Reports** | **Report: [ID]** |
-| - Lab Result (PDF) | - Doctor Info |
-| - Radiology (Image) | - Diagnosis Summary |
-| - Summary (Text) | - Findings & Comments |
-| [Action: Share] | [Action: Download PDF] |
+#### **Layout: My Appointments & History**
+- **Tabs**: [Upcoming] [Completed] [Cancelled]
+- **List View**:
+  - [Date] | [Doctor Name] | [Department] | [Status]
+  - 2023-10-28 | Dr. Sarah Chen | Cardiology | Confirmed
+- **Actions**: [Reschedule] [Cancel] [View Report]
 
-#### **1.4 AI Assistant & Voice (Detailed)**
-- **UI Elements**: Sidebar with Pulsating Waveform, Chat History Window, Manual Input Box.
-- **Transcribe Logic**: [Speak Button] -> [Listening Indicator] -> [Transcribed Text] -> [AI Response].
-
-#### **1.5 Billing & Subscription**
-- **Billing**: Table of Recent Transactions [Date, Service, Amount, Status].
-- **Subscription**: Card View showing [Basic vs Premium] options and [Khalti Upgrade] button.
-
-#### **1.6 Chat, Profile & Settings**
-- **Chat**: 2-Column layout [Doctor List] | [Message Window].
-- **Profile**: Multi-section form [Personal, Medical History, Contacts].
-- **Settings**: [Notification Toggles], [Reset Password], [Account Deletion].
+#### **Layout: Health Records & Reports**
+- **Search**: [Input: Search by Date or Type]
+- **Table**:
+  - [Date] | [Report Title] | [Doctor] | [Download]
+  - 2023-10-20 | Blood Test Results | Dr. Sarah Chen | [PDF Icon]
 
 ---
 
-### 👨‍⚕️ 2. Doctor Workspace (7 Pages)
+### 👨‍⚕️ 3. Doctor Workspace
+**Pages**: Dashboard, Schedule Management, Patient Consultation (EHR).
 
-#### **2.1 Doctor Dashboard & Queue**
+#### **Blueprint: Schedule Configuration**
 ```mermaid
 graph LR
-    A[Dashboard] --> B[Today's Statistics]
-    A --> C[Upcoming Appointment Queue]
-    C --> D[Active: Start Consultation]
-    C --> E[Next: 15 min Alert]
+    A[Calendar Grid] --> B[Time Slot: 08:00 - 09:00]
+    B --> C{Status?}
+    C -- Available --> D[Action: Mark Busy]
+    C -- Booked --> E[Action: View Patient]
+    E --> F[Button: Start Consultation]
 ```
 
-#### **2.2 Schedule Configuration**
-- **Calendar Grid**: Draggable blocks for availability.
-- **Controls**: [Global Work Hours], [Recurring Off-Days], [Emergency Block].
+#### **Blueprint: Patient Consultation (EHR)**
+```mermaid
+graph TD
+    A[Patient Info: Name/Age/Blood] --> B[Symptoms: Text Area]
+    B --> C[Diagnosis: Text Area]
+    C --> D[Prescription: Dynamic List]
+    D --> E[Button: Save EHR & Generate PDF]
+```
 
-#### **2.3 Patient Profiles & Chat**
-- **Profile Search**: Filter by Name/ID.
-- **Consultation View**: Left [Patient History] | Right [Chat Box].
-
-#### **2.4 Reports & Sharing**
-- **Generator**: Form with fields for [Clinical Findings, Internal Notes, Recommendations].
-- **Sharing**: [Generate Secure Link] -> [Copy/Send via Email].
+#### **Layout: Patient Queue & Active Consultations**
+- **Sidebar**: [Queue Name] [Wait Time] [Priority]
+- **Main**: [Active Video Call (ZegoCloud placeholder)]
+- **Right Panel**: [Quick Stats] [Previous Reports History]
 
 ---
 
-### 📊 3. Admin Command Center (7 Pages)
+### 📊 4. Admin Command Center
+**Pages**: Dashboard, User Management, Subscription Tiers.
 
-#### **3.1 Global Revenue Dashboard**
+#### **Layout: Revenue & Billing Dashboard**
+| Metric Card | Metric Card | Metric Card |
+| :--- | :--- | :--- |
+| **Total Revenue** | **Active Users** | **Pending Bills** |
+| $12,450.00 | 1,240 | 15 |
+
+**Data Table: Recent Transactions**
+- [ID] | [Patient Name] | [Amount] | [Status]
+- #101 | John Doe | $150.00 | Paid (Khalti)
+- #102 | Jane Smith | $200.00 | Pending
+
+#### **Layout: User Management**
+- **Filters**: [Select Role] [Status: Active/Inactive] [Search Name]
+- **Actions**: [Edit User] [Reset Password] [Deactivate]
+- **Table**: [Avatar] | [Name] | [Role] | [Email] | [Join Date]
+
+#### **Layout: Subscription Management**
 ```mermaid
-graph TD
-    A[Revenue Summary] --> B[Chart: Monthly Growth]
-    A --> C[Chart: Subscription Distribution]
-    A --> D[Top Earning Doctors List]
+graph LR
+    A[Current Tiers] --> B[Free]
+    A --> C[Basic]
+    A --> D[Premium]
+    B --> E[Edit Limits]
+    C --> F[Edit Price/Features]
+    D --> G[Manage AI/Voice Access]
 ```
 
-#### **3.2 User & Role Management**
-| User Table | Edit/Add Modal |
-| :--- | :--- |
-| **User List** | **User Info** |
-| [ID] [Name] [Role] [Status] | [Role Selection Dropdown] |
-| [Action: Edit] | [Credential Reset Button] |
-| [Action: Suspend] | [Save Changes] |
+---
 
-#### **3.3 Billing Oversights**
-- **Admin View**: Global transaction log with [Success/Failed] filtering and [Refund Trigger] capability.
+### 👤 5. Profile & Settings (Universal)
+**Structural Layout**
+- **Personal Info**: [Avatar Upload] [Name] [Phone] [Address]
+- **Security**: [Change Password] [Two-Factor Toggle]
+- **Preferences**: [Theme: Light/Dark] [Language Select]
+
+---
+
+### 🤖 6. AI Voice Assistant (Modal)
+**Structural Layout**
+- **Header**: [AI Icon] "Health Assistant" [Close X]
+- **Body**: [Waveform Visualization] (Pulsating Orb)
+- **Transcription**: "Listening... Speak your health query."
+- **Actions**: [Mic Mute] [Manual Input] [Clear Transcript]
 
 ---
 *Created by Antigravity AI - HAMS UI/UX Blueprint Phase*
