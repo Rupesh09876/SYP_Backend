@@ -13,19 +13,23 @@ Welcome to the official documentation for the HAMS platform. This repository con
 ### 🚀 Project Overview
 HAMS is a state-of-the-art Hospital Management System designed for seamless Patient-Doctor interaction, secure health data management, and automated financial reporting.
 
-#### **Key Pillars**
-1.  **Security First**: Role-Based Access Control (RBAC) and encrypted data flows.
-2.  **AI Enhanced**: Health assistants and voice interaction powered by Gemini.
-3.  **Real-time Communication**: Seamless audio/video calling using ZegoCloud.
-4.  **Financial Integrity**: Integrated billing with Khalti API and automated revenue reporting.
+#### **Core Capability Highlights**
+| Category | Professional Solution |
+| :--- | :--- |
+| **Patient Care** | Personalized Health Dashboards & Gemini-powered AI Assistance. |
+| **Medical Workflow** | Real-time Appointment Scheduling & HD Video Consultations (ZegoCloud). |
+| **Business Intelligence** | Automated Revenue Analytics & Administrative Control Centers. |
+| **Cyber Security** | JWT-Hardened Backend Proxy & Production-Grade CORS Policies. |
 
 ---
 
-### 🎨 Visual Progress
-| Feature | Evidence |
-| :--- | :--- |
-| **System Dashboard** | ![Dashboard View](./Artifacts/Sprint1_Core/Dashboard_Initial_Mockup.jpg) |
-| **Architectural Layout** | ![System Map](./Artifacts/Sprint1_Core/System_Layout.jpg) |
+### 🎨 Visual Portfolio (Sprint Evidence)
+| Sprint | Feature Mockup | Technical Proof |
+| :--- | :--- | :--- |
+| **Sprint 2** | ![Patient UI](./Artifacts/Sprint2_Patient/Patient_Dashboard_UI.png) | [Evidence](./Artifacts/Sprint2_Patient/Patient_Dashboard.md) |
+| **Sprint 3** | ![Doctor UI](./Artifacts/Sprint3_Doctor/Doctor_Schedule_UI.png) | [Evidence](./Artifacts/Sprint3_Doctor/Doctor_Schedule_Config.md) |
+| **Sprint 4** | ![Admin UI](./Artifacts/Sprint4_Admin/Revenue_Analytics_UI.png) | [Evidence](./Artifacts/Sprint4_Admin/Revenue_Report_Sample.md) |
+| **Sprint 5** | ![AI UI](./Artifacts/Sprint5_AI_Security/AI_Voice_Assistant_UI.png) | [Evidence](./Artifacts/Sprint5_AI_Security/Gemini_Proxy_Flow.md) |
 
 ---
 *Created by Antigravity AI - HAMS Production Deployment Phase*

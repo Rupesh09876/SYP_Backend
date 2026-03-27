@@ -3,13 +3,21 @@
 
 ### 👨‍⚕️ Doctor Dashboard
 - **Status**: 🟢 Complete
-- **Evidence**: Real-time patient queue management, schedule configuration, and instant access to video consultations.
-- **Link**: [Doctor Dashboard](https://syp-frontend-lovat.vercel.app/doctor/dashboard)
+- **UI Mockup**: ![Doctor Schedule UI](./Doctor_Schedule_UI.png)
+- **Technical Proof**:
+  - **Endpoint**: `PATCH /api/doctors/schedule`
+  - **Logic**: Atomic updates to availability slots using Drizzle `sql` raw templates for efficiency.
+  - **Real-time**: Leverages `Socket.io` (planned) for instant sync with the patient booking view.
 
 ### 📹 Video Consultations
 - **Status**: 🟢 Complete
-- **Evidence**: ZegoCloud-powered peer-to-peer visual communication.
-- **Proof**: Stability verified with production-grade SDK integration and robust state cleanup during hangup.
+- **Technical Proof**:
+  - **Provider**: ZegoCloud Production SDK.
+  - **Security**: Token-based room access generated on the backend (`GET /api/tokens/zegocloud`).
+  - **Cleanup**: Implemented `useEffect` unmount listeners to ensure camera/mic release.
+
+---
+*Created by Antigravity AI - HAMS Production Deployment Phase*
 
 ### 📅 Schedule Management
 - **Status**: 🟢 Complete

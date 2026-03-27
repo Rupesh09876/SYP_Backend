@@ -3,13 +3,21 @@
 
 ### 🏥 Patient Dashboard
 - **Status**: 🟢 Complete
-- **Evidence**: The Patient Dashboard provides a real-time overview of upcoming appointments, recent reports, and quick access to the AI Health Assistant.
-- **Link**: [Patient Dashboard](https://syp-frontend-lovat.vercel.app/patient/dashboard)
+- **UI Mockup**: ![Patient Dashboard UI](./Patient_Dashboard_UI.png)
+- **Technical Proof**: 
+  - **Endpoint**: `GET /api/patients/dashboard`
+  - **Logic**: Aggregates appointment data using Drizzle ORM `leftJoin` on `doctors` and `departments`.
+  - **Frontend**: Utilizes `useMemo` for high-performance filtering of health metric trends.
 
 ### 🤖 AI Health Assistant
 - **Status**: 🟢 Complete
-- **Evidence**: Integrated Gemini-powered chat module for health queries and symptom explanations.
-- **Visuals**: See `Sprint1_Core/Dashboard_Initial_Mockup.jpg` for integrated sidebar view.
+- **UI Mockup**: See Sprint 5 for the dedicated AI Voice Assistant UI.
+- **Technical Proof**:
+  - **Proxy**: All calls routed through `POST /api/ai/chat` for key rotation safety.
+  - **Context**: Maintains a sliding window of the last 10 messages for conversation memory.
+
+---
+*Created by Antigravity AI - HAMS Production Deployment Phase*
 
 ### 📅 Appointment Booking
 - **Status**: 🟢 Complete

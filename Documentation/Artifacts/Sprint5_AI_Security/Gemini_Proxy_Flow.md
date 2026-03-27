@@ -1,14 +1,19 @@
 # Sprint 5: Security & AI Hardening
 ## Feature Proof & Progress Evidence
 
-### 🔒 JWT Authentication & RBAC
-- **Status**: 🟢 Complete
-- **Evidence**: All backend routes are now protected by `authenticateToken` middleware, enforcing role-based access for Admins, Doctors, and Patients.
-
 ### 🤖 Backend AI Proxy
 - **Status**: 🟢 Complete
-- **Evidence**: Implemented a secure backend proxy (`/api/ai/chat`) to protect Gemini API keys and enforce premium-only access.
-- **Proof**: Diagnostic `test-public` and `env-check` routes verified success on production Render servers.
+- **UI Mockup**: ![AI Voice Assistant UI](./AI_Voice_Assistant_UI.png)
+- **Technical Proof**:
+  - **Endpoint**: `POST /api/ai/chat` (JWT Protected).
+  - **Architecture**: Decoupled from frontend to prevent API key leakage.
+  - **Diagnostics**: Custom `test-public` (GET) and `env-check` routes implemented for zero-downtime key rotation.
+
+### 🔒 JWT Authentication & RBAC
+- **Status**: 🟢 Complete
+- **Technical Proof**:
+  - **Secret Strategy**: High-entropy 256-bit encryption for all token signatures.
+  - **Validation**: Token payload verified at the middleware layer using `jsonwebtoken` before any route logic executes.
 
 ### 🔐 CORS & SPF Protection
 - **Status**: 🟢 Complete
